@@ -1,0 +1,15 @@
+# Python仮想環境フォルダ
+myenv/
+
+# Jupyter Notebookの出力キャッシュ
+.ipynb_checkpoints/
+
+# Pythonのキャッシュ
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebookが生成する余分なファイル
+*.nbconvert.ipynb
+
+
