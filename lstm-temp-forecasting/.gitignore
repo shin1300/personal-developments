@@ -1,5 +1,4 @@
 # Python仮想環境フォルダ
-venv-py310/
 myenv/
 
 # Jupyter Notebookの出力キャッシュ
