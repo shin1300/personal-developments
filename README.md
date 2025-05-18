@@ -7,7 +7,7 @@
 
 ## 📂 プロジェクト一覧
 
-### [`lstm`](./lstm/)
+### [`lstm`](./lstm-temp-forecasting/)
 **📘 適温予測モデル：スマートリング・赤外線アレイセンサによる体温データを用いて**
 
 - スマートリング・赤外線アレイセンサ・室温センサから得られたデータを用いて、**主観的に心地よいと感じる温度（適温）**を予測
@@ -16,13 +16,9 @@
   - LSTM
   - LSTM + XGBoost のハイブリッドモデル
 - センサ構成：Omron D6T, Sensirion SHT31, Raspberry Pi Pico など
-- 詳細は [`lstm/README.md`](./lstm/README.md) を参照
+- 詳細は(./lstm-temp-forecasting/README.md) を参照
 
 ---
 
 ## 🛠 今後の追加予定
-
-- `decision_tree/`: 決定木モデルの手動実装とscikit-learnによる比較
-- `recommendation/`: ニューラルネットおよび協調フィルタリングによる推薦システム
-- `anomaly_detection/`: 多変量ガウス分布による異常検知
-- その他、実験的な実装やKaggle参加コードなども追加予定
+- 実験的な実装やKaggle参加コードなど
