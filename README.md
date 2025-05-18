@@ -16,7 +16,7 @@
   - LSTM
   - LSTM + XGBoost のハイブリッドモデル
 - センサ構成：Omron D6T, Sensirion SHT31, Raspberry Pi Pico など
-- 詳細は(./lstm-temp-forecasting/README.md) を参照
+- 詳細は[`lstm-temp-forecasting/README.md`](./lstm-temp-forecasting/README.md) を参照
 
 ---
 
