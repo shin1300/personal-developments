@@ -77,7 +77,7 @@ personal-developments/
 
 #### 📂 詳細
 
-[`pdf-web-summarizer/README.md`](./summarp-app/README.md)を参照。
+[`summary-app/README.md`](./summary-app/README.md)を参照。
 
 ---
 
