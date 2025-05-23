@@ -30,9 +30,10 @@
 
 ## 🧩 予測手法
 
-- 体温（スマートリングまたは赤外線アレイセンサ）、室温、アンケートから得られたデータを用いて、主観的に心地よいと感じる温度（適温）を予測
-- 使用モデル：XGBoost, LSTM 　,LSTM + XGBoost のハイブリッドモデル
-- センサ構成：Omron D6T, Sensirion SHT31, Raspberry Pi Pico など
+- 体温（スマートリング or 赤外線アレイセンサ）、室温、アンケートから得られたデータを用いて適温を予測:
+- 使用モデル：XGBoost, LSTM 　,LSTM + XGBoost
+- 使用センサなど：Omron D6T, Sensirion SHT31, Raspberry Pi Pico
+
 - 詳細は[`lstm-temp-forecasting/README.md`](./lstm-temp-forecasting/README.md) を参照
 
 ---
