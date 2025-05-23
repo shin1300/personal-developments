@@ -3,6 +3,18 @@
 
 ---
 
+## 📁 ディレクトリ構成
+
+```
+personal-developments/
+│
+├── lstm-temp-forecasting/ # 適温予測
+│
+├── summary-app/ # 要約アプリ
+│
+└── README.md # ← 今このファイル
+---
+
 ## 📂 プロジェクト一覧
 
 ### [`適温予測`](./lstm-temp-forecasting/)
@@ -30,7 +42,7 @@
 
 ## 🧩 予測手法
 
-- 体温（スマートリング or 赤外線アレイセンサ）、室温、アンケートから得られたデータを用いて適温を予測:
+- 体温（スマートリング or 赤外線アレイセンサ）、室温、アンケートから得られたデータを用いて適温を予測
 - 使用モデル：XGBoost, LSTM 　,LSTM + XGBoost
 - 使用センサなど：Omron D6T, Sensirion SHT31, Raspberry Pi Pico
 
@@ -51,7 +63,7 @@
 
 - PDF テキスト抽出（PyMuPDF）
 - Web ページ本文抽出（requests + BeautifulSoup）
-- Cohere 生成 AI API による高精度な要約生成
+- Cohere 生成 AI API による要約生成
 - Streamlit によるシンプルな UI
 
 #### 🛠 使用技術
@@ -70,3 +82,4 @@
 ## 🛠 今後の追加予定
 
 - 実験的な実装や Kaggle 参加コードなど
+```

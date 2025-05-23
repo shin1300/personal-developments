@@ -7,7 +7,31 @@
 
 ---
 
-## 🛠️ 主な機能
+## 📁 ディレクトリ構成
+
+```
+summary-app/
+│
+├── main.py # Streamlitアプリのエントリーポイント
+│
+│
+├── utils/                  # ユーティリティ関数まとめ
+│   ├── __init__.py
+│   ├── pdf_utils.py        # PDFテキスト抽出用関数
+│   ├── web_utils.py        # Web記事テキスト抽出用関数
+│   └── cohere_api.py       # Cohere要約API呼び出し関数
+│
+│
+├── .gitignore
+│
+├── README.md # ← 今このファイル
+│
+└── requirements.txt # 必要なライブラリ
+```
+
+---
+
+# 🛠️ 主な機能
 
 - PDF ファイルのテキスト抽出（PyMuPDF 使用）
 - Web ページの本文抽出（requests + BeautifulSoup 使用）
@@ -16,21 +40,14 @@
 
 ---
 
-## 📂 データ・入力例
-
-- テスト用 PDF ファイル（例：`data/sample.pdf`など）
-- ニュース記事や技術ブログの URL を入力して要約可能
-
----
-
-## 🛠 技術スタック
+## 🛠 使用技術
 
 - Python 3.10
 - PDF 解析：PyMuPDF (fitz)
 - Web スクレイピング：requests + BeautifulSoup4
 - 要約 AI：Cohere API（`summarize-xlarge`モデル）
 - Web アプリ：Streamlit
-- 環境管理：`requirements.txt`、環境変数による API キー管理（`.env`推奨）
+- 環境管理：`requirements.txt`、環境変数による API キー管理
 
 ---
 
@@ -50,26 +67,22 @@
 - PDF テキスト抽出は`utils/pdf_utils.py`にて PyMuPDF で実装
 - Web 記事本文抽出は`utils/web_utils.py`にて requests+BeautifulSoup で実装
 - Cohere API 呼び出しは`utils/cohere_api.py`にまとめ、環境変数で API キーを管理
-- Streamlit の UI は`main.py`にまとめ、ファイルアップロード・URL 入力から要約表示までを一気通貫で実装
-- API キーは`.env`ファイル等で安全に管理し、Git 管理から除外
-- こまめなコミットで機能単位での履歴を残す
+- Streamlit の UI は`main.py`にまとめ、ファイルアップロード・URL 入力から要約表示までを実装
 
 ---
 
 ## 📌 実行方法
 
 ```bash
-# 1. 仮想環境作成（推奨）
-python3 -m venv venv
-source venv/bin/activate  # Windowsは venv\Scripts\activate
+# 1. 仮想環境作成
+python -m venv myenv
+myenv\Scripts\activate
 
 # 2. パッケージインストール
 pip install -r requirements.txt
 
 # 3. 環境変数にAPIキー設定
-export COHERE_API_KEY="あなたのAPIキー"
-# Windows PowerShellの場合
-# $env:COHERE_API_KEY="あなたのAPIキー"
+$env:COHERE_API_KEY="あなたのAPIキー"
 
 # 4. アプリ起動
 streamlit run main.py
