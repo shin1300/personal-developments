@@ -67,14 +67,15 @@ personal-developments/
 #### 🎯 目的
 
 - 長文の PDF や Web 記事を素早く要点把握できるように支援。
-- 情報整理やチーム内共有の効率化を目指して開発。
+- 情報整理を目指して開発。
 
 #### ✅ 特徴
 
-- PDF からのテキスト抽出（PyMuPDF）
-- Web 記事の本文抽出（requests + BeautifulSoup）
+- PDF からのテキスト抽出
+- Web 記事の本文抽出
 - Cohere API を用いた高精度な要約生成
 - Streamlit によるシンプルかつ直感的な UI
+- 要約結果の Flask API 経由でのデータベース保存機能
 
 #### 🛠 使用技術
 
@@ -83,8 +84,9 @@ personal-developments/
 - requests, BeautifulSoup4
 - Cohere API
 - Streamlit
-
-📄 詳細：[summary-app/README.md](./summary-app/README.md)
+- flask
+- potgreSQL
+  📄 詳細：[summary-app/README.md](./summary-app/README.md)
 
 ---
 

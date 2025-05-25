@@ -1,19 +1,19 @@
-from flask import request, jsonify
+from flask import request, jsonify, current_app as app
 from flask_api.extensions import db
 from flask_api.models import Summary
-from flask import current_app as app
 
 @app.route("/save", methods=["POST"])
 def save_summary():
     data = request.get_json()
-    print("Received JSON:", data)
+    # ログ用
+    # app.logger.debug(f"Received JSON: {data}")
 
     input_type = data.get("input_type")
     source = data.get("source")
     summary_text = data.get("summary")
 
     if not summary_text:
-        print("No summary provided!")
+        # app.logger.warning("No summary provided!")
         return jsonify({"error": "No summary provided"}), 400
 
     new_summary = Summary(input_type=input_type, source=source, summary=summary_text)
@@ -24,7 +24,7 @@ def save_summary():
 
 @app.route("/", methods=["GET"])
 def index():
-    # トップページ用など。必要なければ削除してください。
+    # トップページ用の簡単な確認エンドポイント
     return jsonify({"message": "Welcome to the summary app"}), 200
 
 @app.route("/summaries", methods=["GET"])
