@@ -30,6 +30,20 @@ summary-app/
 │   ├── text_utils.py       # テキスト分割
 │   └── web_utils.py        # Web記事テキスト抽出用関数
 │
+├── flask_api/ # Flask + PostgreSQL バックエンドAPI
+│   ├── app.py # Flaskアプリ作成ファイル
+│   ├── run.py # Flaskアプリの起動スクリプト
+│   ├── models.py # SQLAlchemyモデル定義
+│   ├── routes.py # APIエンドポイント定義
+│   └── extensions.py # DB拡張機能
+│
+├──migrations/
+│   ├── env.py               # マイグレーション環境の設定ファイル
+│   ├── versions/            # 各バージョンごとのスクリプトが入る
+│   ├── README               # マイグレーションの概要説明
+│   ├── script.py.mako       # 自動生成用テンプレート
+│   └── alembic.ini          # Alembic設定ファイル
+│
 │
 ├── .gitignore
 │
@@ -47,17 +61,20 @@ summary-app/
 - Cohere 生成 AI API による要約生成
 - 長文テキストのチャンク分割と多段階要約対応
 - シンプルな Streamlit Web UI でのファイル・URL 入力と要約結果表示
+- Streamlit による直感的な UI でファイル・URL の入力、要約表示、ダウンロード
+- 要約結果の Flask API 経由でのデータベース保存機能
 
 ---
 
 ## 🛠 使用技術
 
-- Python 3.10
-- PDF 解析：PyMuPDF (fitz)
-- Web スクレイピング：requests + BeautifulSoup4
-- 要約 AI：Cohere API（`summarize-xlarge`モデル）
-- Web アプリ：Streamlit
-- 環境管理：`requirements.txt`、環境変数による API キー管理
+- 言語：Python 3.10
+- PDF 解析：PyMuPDF（`fitz`）
+- Web スクレイピング：`requests` + `BeautifulSoup4`
+- 自然言語処理：Cohere API（`summarize-xlarge`モデルによる要約）
+- フロントエンド：Streamlit
+- バックエンド：Flask（REST API 構築）
+- データベース：PostgreSQL（SQLAlchemy による操作）
 
 ---
 
@@ -65,10 +82,8 @@ summary-app/
 
 本アプリでは、長文のテキストを扱う際に以下の工夫をしています。
 
-- **テキストのチャンク分割**  
+- **テキストのチャンク分割・要約**  
   テキストが一定の長さ（例：5000 文字）を超える場合、全文をそのまま要約 API に投げると処理が重くなったり、API の文字数制限に引っかかるため、まず適切な長さに分割します。
-
-- **分割チャンクごとの要約**  
   分割した各チャンクに対して個別に要約を実行します。
 
 - **多段階要約（2 段階要約）**  
@@ -82,29 +97,20 @@ summary-app/
 
 ---
 
-## 📌 開発のポイント
+## 📌 開発のポイント（フロントエンド & バックエンド）
 
-- PDF テキスト抽出は`utils/pdf_utils.py`にて PyMuPDF で実装
-- Web 記事本文抽出は`utils/web_utils.py`にて requests+BeautifulSoup で実装
-- Cohere API 呼び出しは`utils/cohere_api.py`にまとめ、環境変数で API キーを管理
-- 長文テキストは`main.py`内でチャンク分割し、**多段階要約（チャンクごと要約＋再要約）**を行う実装
-- Streamlit の UI は`main.py`にまとめ、ファイルアップロード・URL 入力から要約表示までを実装
+### 🔹 フロントエンド（Streamlit）
 
----
+- **PDF テキスト抽出**は `utils/pdf_utils.py` にて PyMuPDF を使用して実装
+- **Web 記事本文の抽出**は `utils/web_utils.py` にて **requests + BeautifulSoup** により実装
+- **Cohere API の呼び出し**は `utils/cohere_api.py` に集約し、環境変数で API キーを安全に管理
+- 長文テキストのチャンク分割と多段階要約処理は `main.py` 内で実装
+- Streamlit UI は `main.py` に集約し、ファイルアップロード・URL 入力・要約表示・要約保存までを提供
 
-## 📌 実行方法
+### 🔹 バックエンド（Flask + PostgreSQL）
 
-```bash
-# 1. 仮想環境作成
-python -m venv myenv
-myenv\Scripts\activate
-
-# 2. パッケージインストール
-pip install -r requirements.txt
-
-# 3. 環境変数にAPIキー設定
-$env:COHERE_API_KEY="あなたのAPIキー"
-
-# 4. アプリ起動
-streamlit run main.py
-```
+- Flask アプリは `flask_api/app.py` で Factory パターンを用いて構築
+- SQLAlchemy モデル定義は `flask_api/models.py` に記述し、要約履歴を DB に保存
+- API エンドポイントは `flask_api/routes.py` にまとめ、`/save` で POST 受け取り可能
+- PostgreSQL データベースとの接続は `flask_api/extensions.py` に定義された `SQLAlchemy` インスタンスで管理
+- アプリ起動スクリプトは `flask_api/run.py` により実行

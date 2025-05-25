@@ -3,11 +3,11 @@ from utils.pdf_utils import extract_text_pdf
 from utils.web_utils import extract_text_web
 from utils.cohere_api import summarize_text
 from utils.text_utils import split_text_into_chunks
-from utils.pdf_utils import create_pdf_from_text  # PDF作成関数を追加読み込み
+from utils.pdf_utils import create_pdf_from_text
+from utils.api_post import post_summary_to_flask  # ✅ 追加：FlaskへPOSTする関数
+import requests
+MIN_LENGTH = 250
 
-MIN_LENGTH = 250  # 要約APIが受け付ける最小文字数
-
-# 長文テキストを分割して順に要約する関数
 def summarize_long_text(text, length="medium"):
     try:
         text_for_check = text.replace("\n", "").replace(" ", "")
@@ -35,23 +35,17 @@ def summarize_long_text(text, length="medium"):
         st.error(f"要約中にエラーが発生しました: {e}")
         return None
 
-
-# アプリタイトル
 st.title("PDF・Web記事要約アプリ")
 
-# 入力タイプ選択（PDFまたはWeb）
 input_type = st.radio("入力タイプを選択", ["PDFアップロード", "Web記事URL"])
-
-# 要約の長さを選択
 length_label = st.radio("要約の長さを選択", ["短く", "中くらい", "詳しく"])
 length_map = {"短く": "short", "中くらい": "medium", "詳しく": "long"}
 selected_length = length_map[length_label]
 
-def show_summary_and_download(summary, original_text):
+def show_summary_and_download(summary, original_text, source_type, source_info):
     st.subheader("要約結果")
     st.write(summary)
 
-    # ダウンロードボタン（TXT）
     st.download_button(
         label="要約をTXTファイルでダウンロード",
         data=summary,
@@ -59,7 +53,6 @@ def show_summary_and_download(summary, original_text):
         mime="text/plain",
     )
 
-    # ダウンロードボタン（PDF）
     pdf_data = create_pdf_from_text(summary)
     st.download_button(
         label="要約をPDFファイルでダウンロード",
@@ -68,11 +61,20 @@ def show_summary_and_download(summary, original_text):
         mime="application/pdf",
     )
 
+    # ✅ 保存ボタンの追加
+    if st.button("要約を保存する"):
+        result = post_summary_to_flask(
+            input_text=original_text,
+            summary_text=summary,
+            source_type=source_type,
+            source_info=source_info
+        )
+        st.success(result)
+
     with st.expander("原文を表示する"):
         st.write(original_text)
 
 
-# PDFファイルアップロード処理
 if input_type == "PDFアップロード":
     uploaded_file = st.file_uploader("PDFファイルをアップロード", type=["pdf"])
     if uploaded_file:
@@ -84,12 +86,11 @@ if input_type == "PDFアップロード":
                 summary = summarize_long_text(text, selected_length)
 
             if summary:
-                show_summary_and_download(summary, text)
+                show_summary_and_download(summary, text, source_type="pdf", source_info=uploaded_file.name)
 
         except Exception as e:
             st.error(f"PDF読み込みまたは要約中にエラーが発生しました: {e}")
 
-# Web記事URL入力処理
 else:
     url = st.text_input("Web記事URLを入力")
     if url:
@@ -101,7 +102,33 @@ else:
                 summary = summarize_long_text(text, selected_length)
 
             if summary:
-                show_summary_and_download(summary, text)
+                show_summary_and_download(summary, text, source_type="web", source_info=url)
 
         except Exception as e:
             st.error(f"Web記事読み込みまたは要約中にエラーが発生しました: {e}")
+
+
+def show_saved_summaries():
+    st.header("保存済み要約一覧")
+
+    try:
+        response = requests.get("http://127.0.0.1:5000/summaries")
+        response.raise_for_status()
+        summaries = response.json()
+
+        if not summaries:
+            st.info("保存された要約はまだありません。")
+            return
+
+        for item in summaries:
+            st.subheader(f"ID: {item['id']} - {item['source']} ({item['input_type']})")
+            st.write(f"作成日時: {item['created_at']}")
+            st.write(item['summary'])
+            st.markdown("---")
+
+    except Exception as e:
+        st.error(f"保存済み要約の取得に失敗しました: {e}")
+
+# Streamlitのどこかで呼び出す
+if st.button("保存済み要約を見る"):
+    show_saved_summaries()
