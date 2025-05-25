@@ -54,7 +54,7 @@ summary-app/
 
 ---
 
-# 🛠️ 主な機能
+# ✅ 主な機能
 
 - PDF ファイルのテキスト抽出（PyMuPDF 使用）
 - Web ページの本文抽出（requests + BeautifulSoup 使用）
