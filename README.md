@@ -79,14 +79,14 @@ personal-developments/
 
 #### 🛠 使用技術
 
-- Python 3.10
 - PyMuPDF
 - requests, BeautifulSoup4
 - Cohere API
 - Streamlit
 - flask
 - potgreSQL
-  📄 詳細：[summary-app/README.md](./summary-app/README.md)
+
+📄 詳細：[summary-app/README.md](./summary-app/README.md)
 
 ---
 
