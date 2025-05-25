@@ -31,6 +31,7 @@ summary-app/
 │   └── web_utils.py        # Web記事テキスト抽出用関数
 │
 ├── flask_api/ # Flask + PostgreSQL バックエンドAPI
+│   ├── __init__.py
 │   ├── app.py # Flaskアプリ作成ファイル
 │   ├── run.py # Flaskアプリの起動スクリプト
 │   ├── models.py # SQLAlchemyモデル定義
